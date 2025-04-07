@@ -4,4 +4,5 @@
 
 #### ver 0.0.3 fix cruise track handling and cruise_id in SQL for styling in geoserver
 
+#### ver 0.0.4 basic FastAPI appication/n1
 

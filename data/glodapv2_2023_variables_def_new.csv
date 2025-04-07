@@ -1,0 +1,65 @@
+definition,units,variables,WOCE_flag,QC_flag,WHP_exchange
+EXPOCODE,,expocode,,,
+Digital objectidentifier,,doi,,,
+Assigned sequentialcruise number,,cruise,,,
+Basin identifierc,,region,,,
+Station,,station,,,STNNBR
+Cast,,cast_number,,,CASTNO
+Year,,year,,,DATE
+Month,,month,,,DATE
+"UTC datetime from year, month, day, hour, minute",,datetime,,,DATE
+Latitude,,latitude,,,LATITUDE
+Longitude,,longitude,,,LONGITUDE
+Bottom depth,m,bottomdepth,,,
+Pressure of the deepest sample,dbar,maxsampdepth,,,DEPTH
+Niskin bottle number,,bottle,,,BTLNBR
+Sampling pressure,dbar,pressure,,,CTDPRS
+Sampling depth,m,depth,,,
+Temperature,°C,temperature,,,CTDTMP
+Potential temperature,°C,theta,,,
+Salinity,,salinity,flag_salinity,qc_salinity,CTDSAL/SALNTY
+Potential densityanomaly,kg m−3,sigma0,flag_salinity,,
+"Potential densityanomaly, ref 1000 dbar",kg m−3,sigma1,flag_salinity,,
+"Potential densityanomaly, ref 2000 dbar",kg m−3,sigma2,flag_salinity,,
+"Potential densityanomaly, ref 3000 dbar",kg m−3,sigma3,flag_salinity,,
+"Potential densityanomaly, ref 4000 dbar",kg m−3,sigma4,flag_salinity,,
+Neutral densityanomaly,kg m−3,gamma,flag_salinity,,
+Oxygen,µmol kg−1,oxygen,flag_oxygen,qc_oxygen,CTDOXY/OXYGEN
+Apparent oxygenutilization,µmol kg−1,aou,flag_aou,,
+Nitrate,µmol kg−1,nitrate,flag_nitrate,qc_nitrate,NITRAT
+Nitrite,µmol kg−1,nitrite,flag_nitrite,,NITRIT
+Silicate,µmol kg−1,silicate,flag_silicate,qc_silicate,SILCAT
+Phosphate,µmol kg−1,phosphate,flag_phosphate,qc_phosphate,PHSPHT
+TCO2,µmol kg−1,tco2,flag_tco2,qc_tco2,TCARBON
+TAlk,µmol kg−1,talk,flag_talk,qc_talk,ALKALI
+"pH on total scale, 25 °C and 0 dbar of pressure",,phts25p0,flag_phts25p0,qc_phts,PH_TOT
+"pH on total scale, in situ temperature andpressure",,phtsinsitutp,flag_phtsinsitutp,qc_phts,
+fCO2 at 20 °C and0 dbar of pressure,µatm,fco2,flag_fco2,,FCO2/PCO2
+fCO2 temperatured,°C,fco2temp,flag_fco2,,FCO2_TMP/PCO2_TMP
+CFC-11,pmol kg−1,cfc11,flag_cfc11,qc_cfc11,CFC-11
+pCFC-11,ppte,pcfc11,flag_cfc11,,
+CFC-12,pmol kg−1,cfc12,flag_cfc12,qc_cfc12,CFC-12
+pCFC-12,ppt,pcfc12,flag_cfc12,,
+CFC-113,pmol kg−1,cfc113,flag_cfc113,qc_cfc113,CFC-113
+pCFC-113,ppt,pcfc113,flag_cfc113,,
+CCl4,pmol kg−1,ccl4,flag_ccl4,qc_ccl4,CCL4
+pCCl4,ppt,pccl4,flag_ccl4,,
+SF6,fmol kg−1,sf6,flag_sf6,qc_sf6,SF6
+pSF6,ppt,psf6,flag_sf6,,
+δ13C,‰,c13,flag_c13,qc_c13,DELC13
+Δ14C,‰,c14,flag_c14,,DELC14
+Δ14C counting error,‰,err_c14,,,C14ERR
+3H,TU,h3,flag_h3,,TRITIUM
+3H counting error,TU,err_h3,,,TRITER
+δ3He,%,he3,flag_he3,,DELHE3
+3He counting error,%,err_he3,,,DELHER
+He,nmol kg−1,he,flag_he,,HELIUM
+He counting error,nmol kg−1,err_he,,,HELIER
+Ne,nmol kg−1,neon,flag_neon,,NEON
+Ne counting error,nmol kg−1,err_neon,,,NEONER
+δ18O,‰,o18,flag_o18,,DELO18
+Total organic carbon,µmol L−1 f,toc,flag_toc,,TOC
+Dissolved organiccarbon,µmol L−1 f,doc,flag_doc,,DOC
+Dissolved organicnitrogen,µmol L−1 f,don,flag_don,,DON
+Dissolved total nitrogen,µmol L−1 f,tdn,flag_tdn,,TDN
+Chlorophyll a,µg kg−1 f,chla,flag_chla,,CHLORA
