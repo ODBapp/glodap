@@ -47,7 +47,7 @@ app = FastAPI(
     lifespan=lifespan,
     docs_url=None,
     title="ODB GLODAP API",
-    description="Open API to query GLODAP v2.2023 data, compiled by ODB.",
+    description="Open API to query GLODAP v2.2023 data, compiled by ODB. Data source: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0283442",
     version="1.0.0"
 )
 

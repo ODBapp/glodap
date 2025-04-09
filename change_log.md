@@ -9,3 +9,5 @@
 #### ver 0.0.5 complete /glodap/v2/2023/ endpoint for connection pool, concurrency and add Swagger/n2
 
 #### ver 0.0.6 add /glodap/v2/2023/cruise endpoint for cruise summary table (metadata), add CSV output
+
+#### ver 0.1.0 deploy on ecodata, fix cruise alias have postgres reserved word like OR*

@@ -161,19 +161,21 @@ async def query_cruise_metadata(
         if ship_clauses:
             conditions.append("(" + " OR ".join(ship_clauses) + ")")
 
+    # Cruise filter (safe OR handling)
     if cruise:
-        patterns = dedup_and_strip(cruise.split(','))
-        cruise_clauses = []
-        for i, p in enumerate(patterns):
-            if '*' in p:
-                cruise_clauses.append(f"LOWER(expocode) LIKE :exp_{i} OR LOWER(alias) LIKE :alias_{i}")
-                params[f"exp_{i}"] = p.lower().replace("*", "%")
-                params[f"alias_{i}"] = p.lower().replace("*", "%")
+        cruise_list = list({c.strip().lower() for c in cruise.split(',') if c.strip()})
+        cruise_conditions = []
+        for i, cruise_code in enumerate(cruise_list):
+            if '*' in cruise_code:
+                cruise_like = cruise_code.replace("*", "%")
+                cruise_conditions.append(f"(LOWER(expocode) LIKE :cruise_exp_{i} OR LOWER(alias) LIKE :cruise_alias_{i})")
+                params[f"cruise_exp_{i}"] = cruise_like
+                params[f"cruise_alias_{i}"] = cruise_like
             else:
-                cruise_clauses.append(f"LOWER(expocode) = :exp_{i}")
-                params[f"exp_{i}"] = p.lower()
-        if cruise_clauses:
-            conditions.append("(" + " OR " + " OR ".join(cruise_clauses) + ")")
+                cruise_conditions.append(f"LOWER(expocode) = :cruise_exp_{i}")
+                params[f"cruise_exp_{i}"] = cruise_code
+        if cruise_conditions:
+            conditions.append("(" + " OR ".join(cruise_conditions) + ")")
 
     if start and end and start > end:
         start, end = end, start
