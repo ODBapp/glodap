@@ -3,7 +3,7 @@ from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from typing import Optional, List
 from datetime import datetime, timezone
 from pydantic import BaseModel
@@ -13,8 +13,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
 from async_lru import alru_cache
+from src.cruise_metadata import router as cruise_router
 import os
 import re
+import io
 
 load_dotenv()
 APPHOST = os.getenv('APPHOST')
@@ -57,6 +59,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(cruise_router)
+
+'''
 class GlodapRecord(BaseModel):
     expocode: Optional[str]
     station: Optional[str]
@@ -68,6 +73,7 @@ class GlodapRecord(BaseModel):
     longitude: Optional[float]
     depth: Optional[float]
     datetime: Optional[datetime]
+'''
 
 @app.get("/glodap/v2/2023/openapi.json", include_in_schema=False)
 async def custom_openapi():
@@ -118,7 +124,8 @@ async def query_glodap(
     append: Optional[str] = Query(None, description="Comma-separated extra variables or wildcards (e.g. '*cfc*', 'nitrate', '*')"),
     flag: Optional[bool] = Query(False, description="Include corresponding World Ocean Circulation Experiment (WOCE) flag of additional varaibles"),
     qc: Optional[bool] = Query(False, description="Include corresponding quality control (QC) flag of additional varaibles"),
-    doi: Optional[bool] = Query(True, description="Include DOI of data for citation")
+    doi: Optional[bool] = Query(True, description="Include DOI of data for citation"),
+    format: Optional[str] = Query("json", description="Output format: 'json' (default) or 'csv'")
 ):
     if cruise is None and (lon0 is None or lat0 is None):
         raise HTTPException(status_code=400, detail="You must specify either cruise or both lon0 and lat0")
@@ -204,4 +211,13 @@ async def query_glodap(
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
-    return [dict(row) for row in rows]
+    records = [dict(row) for row in rows]
+
+    if format.lower() == 'csv':
+        df = pd.DataFrame(records)
+        stream = io.StringIO()
+        df.to_csv(stream, index=False)
+        stream.seek(0)
+        return StreamingResponse(iter([stream.getvalue()]), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=glodapv2_2023_data.csv"})
+ 
+    return records

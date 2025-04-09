@@ -7,3 +7,5 @@
 #### ver 0.0.4 basic FastAPI appication/n1
 
 #### ver 0.0.5 complete /glodap/v2/2023/ endpoint for connection pool, concurrency and add Swagger/n2
+
+#### ver 0.0.6 add /glodap/v2/2023/cruise endpoint for cruise summary table (metadata), add CSV output
