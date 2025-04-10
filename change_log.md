@@ -11,3 +11,5 @@
 #### ver 0.0.6 add /glodap/v2/2023/cruise endpoint for cruise summary table (metadata), add CSV output
 
 #### ver 0.1.0 deploy on ecodata, fix cruise alias have postgres reserved word like OR*
+
+    - fix SQL for PI matching with params binding in SQLAlchemy

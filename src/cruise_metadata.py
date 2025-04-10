@@ -115,18 +115,35 @@ async def query_cruise_metadata(
 
     conditions = []
     params = {}
-
+    ''' Directly use SQL, without params binding (it works)
     if pi and pi.lower() != "false":
-        pi_terms = dedup_and_strip(pi.split(','))
-        for pi_term in pi_terms:
-            if '*' in pi_term:
-                conditions.append("(" + " OR ".join([f"LOWER({col}) LIKE :pi_{col}_{i}" for i, col in enumerate(pi_cols)]) + ")")
-                for i, col in enumerate(pi_cols):
-                    params[f"pi_{col}_{i}"] = pi_term.lower().replace("*", "%")
-            else:
-                conditions.append("(" + " OR ".join([f"LOWER({col}) ILIKE :pi_{col}_{i}" for i, col in enumerate(pi_cols)]) + ")")
-                for i, col in enumerate(pi_cols):
-                    params[f"pi_{col}_{i}"] = f"%{pi_term.lower()}%"
+        pi_terms = dedup_and_strip(pi.split(","))
+        inner_conditions = []
+        for pi_idx, pi_term in enumerate(pi_terms):
+            for i, col in enumerate(pi_cols):
+                key = f"pi_{pi_idx}_{col}_{i}"
+                if '*' in pi_term:
+                    params[key] = pi_term.lower().replace("*", "%")
+                else:
+                    params[key] = f"%{pi_term.lower()}%"
+                item = params[key]
+                inner_conditions.append(f"LOWER({col}) ILIKE '{item}'")
+        if inner_conditions:
+            conditions.append("(" + " OR ".join(inner_conditions) + ")")
+    '''
+    if pi and pi.lower() != "false":
+        pi_terms = dedup_and_strip(pi.split(","))
+        inner_conditions = []
+        for pi_idx, pi_term in enumerate(pi_terms):
+            for i, col in enumerate(pi_cols):
+                key = f"pi_{pi_idx}_{col}_{i}"
+                if '*' in pi_term:
+                    params[key] = pi_term.lower().replace("*", "%")
+                else:
+                    params[key] = f"%{pi_term.lower()}%"
+                inner_conditions.append(f"LOWER({col}) ILIKE :{key}")
+        if inner_conditions:
+            conditions.append("(" + " OR ".join(inner_conditions) + ")")
 
     if include_measurements:
         pattern = measurement.lower().replace("*", "%")
