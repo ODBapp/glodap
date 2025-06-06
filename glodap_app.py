@@ -47,7 +47,15 @@ app = FastAPI(
     lifespan=lifespan,
     docs_url=None,
     title="ODB GLODAP API",
-    description="Open API to query GLODAP v2.2023 data, compiled by ODB. Data source: https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0283442",
+    description=(
+        "Open API to query GLODAP v2.2023 data, compiled by ODB. "
+        "GLODAP dataset includes bottle measurements of salinity, oxygen, "
+        "nitrate, silicate, phosphate, dissolved inorganic carbon (TCO2), "
+        "total alkalinity (TAlk), CO2 fugacity (fCO2), pH, "
+        "chlorofluorocarbons (CFC-11, CFC-12, CFC-113, CCl4) and SF6, "
+        "spanning 1972–2021. Data source: https://www.ncei.noaa.gov/access/" 
+        "metadata/landing-page/bin/iso?id=gov.noaa.nodc:0283442"
+    ),
     version="1.0.0"
 )
 
@@ -125,6 +133,8 @@ async def query_glodap(
     flag: Optional[bool] = Query(False, description="Include corresponding World Ocean Circulation Experiment (WOCE) flag of additional varaibles"),
     qc: Optional[bool] = Query(False, description="Include corresponding quality control (QC) flag of additional varaibles"),
     doi: Optional[bool] = Query(True, description="Include DOI of data for citation"),
+    limit: Optional[int] = Query(None, description="Maximum number of records to return"),
+    offset: Optional[int] = Query(None, description="Number of records to skip"),
     format: Optional[str] = Query("json", description="Output format: 'json' (default) or 'csv'")
 ):
     if cruise is None and (lon0 is None or lat0 is None):
@@ -203,6 +213,13 @@ async def query_glodap(
         sql += f" AND LOWER(expocode) IN ({placeholders})"
         for i, val in enumerate(cruise_list):
             params[f'cruise_{i}'] = val
+
+    if limit is not None:
+        sql += " LIMIT :limit"
+        params['limit'] = limit
+    if offset is not None:
+        sql += " OFFSET :offset"
+        params['offset'] = offset
 
     try:
         async with engine.connect() as conn:
