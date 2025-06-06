@@ -43,7 +43,7 @@ async def get_cruise_columns():
         """))
         return [r[0] for r in result.fetchall()]
 
-@router.get("/glodap/v2/2023/cruise", summary="Query GLODAP cruise metadata", description="Search cruise metadata with fuzzy filters for cruise,PI names, and etc. Refer to https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system/oceans/GLODAPv2_2023/cruise_table_v2023.html")
+@router.get("/glodap/v2/2023/cruise", summary="Query GLODAP cruise metadata")
 async def query_cruise_metadata(
     cruise: Optional[str] = Query(None, description="Comma-separated cruise expocode(s) to match expocode or alias by using wildcard (e.g. *ARK*)"),
     start: Optional[datetime] = Query(None, description="Filtering cruises after given start date (e.g. 1990-01-01)"),
@@ -56,6 +56,15 @@ async def query_cruise_metadata(
     append: Optional[str] = Query("*", description="Extra columns to include: data_files, qc_details, map, metadata_report, cruise_references by using abbreviations: file, qc, map, metadata, ref). Comma-separated (e.g. file,map), use 'all' or '*' to include all, 'false' to include none."),
     format: Optional[str] = Query("json", description="Output format: 'json' (default) or 'csv'")
 ):
+    """
+    Search GLODAP cruise metadata (1108 cruises), covering global ocean (Pacific, Atlantic, Arctic) between 1972 and 2021 with fuzzy filters for cruise, PI names, and etc. 
+    Refer to https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system/oceans/GLODAPv2_2023/cruise_table_v2023.html
+
+    #### Usage
+    * /glodap/v2/2023/cruise?pi=Kelly*,Schlosser&field=chief,carbon&region=Arctic&append=qc,map&format=json
+
+    """
+
     all_cols = await get_cruise_columns()
     base_order = ["expocode", "start_date", "end_date", "region", "alias", "ship"]
     pi_fields_map = {

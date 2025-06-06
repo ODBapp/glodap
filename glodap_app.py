@@ -118,7 +118,7 @@ async def get_table_columns():
         """))
         return {r[0] for r in result.fetchall()}
 
-@app.get("/glodap/v2/2023/", response_model=List[dict], summary="Query GLODAP v2.2023 dataset", description="Search oceanographic data from GLODAP v2.2023 using spatial, temporal, and cruise filters.")
+@app.get("/glodap/v2/2023/", response_model=List[dict], summary="Query GLODAP v2.2023 dataset")
 async def query_glodap(
     lon0: Optional[float] = Query(None, description="Minimum longitude (required if cruise is not specified)"),
     lat0: Optional[float] = Query(None, description="Minimum latitude (required if cruise is not specified)"),
@@ -137,6 +137,16 @@ async def query_glodap(
     offset: Optional[int] = Query(None, description="Number of records to skip"),
     format: Optional[str] = Query("json", description="Output format: 'json' (default) or 'csv'")
 ):
+    """
+    Search oceanographic data from GLODAP v2.2023 using spatial, temporal, and cruise filters. 
+    GLODAP dataset includes bottle measurements of salinity, oxygen, nutrients(nitrate, silicate, phosphate), dissolved inorganic carbon (TCO2), total alkalinity (TAlk), CO2 fugacity (fCO2), pH, CFCs (CFC-11, CFC-12, CFC-113, CCl4) and SF6.
+
+    #### Usage
+    * /glodap/v2/2023?lon0=-60&lon1=-30&lat0=0&lat1=30&dep0=0&dep1=200&start=1980-01-01&end=2020-12-31&append=nitrate,silicate,phosphate,oxygen,cfc*
+    * /glodap/v2/2023?cruise=21OR19910626&append=temperature,salinity&format=csv
+    * Use the /cruise endpoint to discover valid expocode identifiers for cruise selection.
+    """
+
     if cruise is None and (lon0 is None or lat0 is None):
         raise HTTPException(status_code=400, detail="You must specify either cruise or both lon0 and lat0")
 
