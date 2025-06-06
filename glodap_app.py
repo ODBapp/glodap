@@ -53,7 +53,7 @@ app = FastAPI(
         "nitrate, silicate, phosphate, dissolved inorganic carbon (TCO2), "
         "total alkalinity (TAlk), CO2 fugacity (fCO2), pH, "
         "chlorofluorocarbons (CFC-11, CFC-12, CFC-113, CCl4) and SF6, "
-        "spanning 1972–2021. Data source: https://www.ncei.noaa.gov/access/" 
+        "spanning 1972–2021, in global oceans. Data source: https://www.ncei.noaa.gov/access/" 
         "metadata/landing-page/bin/iso?id=gov.noaa.nodc:0283442"
     ),
     version="1.0.0"
