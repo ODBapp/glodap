@@ -1,5 +1,7 @@
 # ODB Open API to query GLODAP v2.2023 data
 
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.15606826.svg)](https://doi.org/10.5281/zenodo.15606826)
+
 ### Swagger API Doc
 
 [ODB GLODAP API manual and live try-out](https://api.odb.ntu.edu.tw/hub/swagger?node=odb_glodap_v1)
