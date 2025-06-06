@@ -13,3 +13,5 @@
 #### ver 0.1.0 deploy on ecodata, fix cruise alias have postgres reserved word like OR*
 
     - fix SQL for PI matching with params binding in SQLAlchemy
+    
+#### ver 0.1.1 Update Swagger documentation and add pagination parameters/update README.md for documentation
