@@ -38,7 +38,9 @@ Query bottle data either by cruise ID(s) or by specifying spatiotemporal bounds:
 * `dep0`, `dep1`: depth range filters.
 * `start`, `end`: time range filters.
 * `cruise`: comma-separated list of expocodes (e.g. `cruise=21OR19910626`), required if `lon0`, `lat0` are not used.
-* `append`: output variables to include (e.g. `append=temperature,salinity,oxygen`).
+* `append`: output variables to include (e.g. `append=temperature,salinity,oxygen`). Full list of available data variables: https://gee-community-catalog.org/projects/glodap/#variable-key
+* `flag`: enable to corresponding World Ocean Circulation Experiment (WOCE) flag of appended varaibles (default: false).
+* `qc`: enable to corresponding quality control (QC) flag of appended varaibles (default: false).
 * `format`: output format (`json` or `csv`).
 
 📌 **Examples:**
@@ -71,6 +73,10 @@ Query bottle data either by cruise ID(s) or by specifying spatiotemporal bounds:
 
 ```
     Olsen, A., R. M. Key, S. van Heuven, S. K. Lauvset, A. Velo, X. Lin, C. Schirnick, A. Kozyr, T. Tanhua, M. Hoppema, S. Jutterström, R. Steinfeldt, E. Jeansson, M. Ishii, F. F. Pérez and T. Suzuki. The Global Ocean Data Analysis Project version 2 (GLODAPv2) – an internally consistent data product for the world ocean, Earth Syst. Sci. Data, 8, 297–323, 2016, doi:10.5194/essd-8-297-2016
+```
+
+```
+    Key, R.M., A. Olsen, S. van Heuven, S. K. Lauvset, A. Velo, X. Lin, C. Schirnick, A. Kozyr, T. Tanhua, M. Hoppema, S. Jutterström, R. Steinfeldt, E. Jeansson, M. Ishii, F. F. Perez, and T. Suzuki. 2015. Global Ocean Data Analysis Project, Version 2 (GLODAPv2), ORNL/CDIAC-162, NDP-093. Carbon Dioxide Information Analysis Center, Oak Ridge National Laboratory, US Department of Energy, Oak Ridge, Tennessee. doi:10.3334/CDIAC/OTG.NDP093_GLODAPv2
 ```
 
 ### API Citation

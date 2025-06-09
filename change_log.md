@@ -17,4 +17,5 @@
 #### ver 0.1.1 Update Swagger documentation and add pagination parameters/update README.md for documentation
 
     - update API documentation
+    - update full available data variable list
 

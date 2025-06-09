@@ -52,9 +52,9 @@ app = FastAPI(
         "GLODAP dataset includes bottle measurements of salinity, oxygen, "
         "nitrate, silicate, phosphate, dissolved inorganic carbon (TCO2), "
         "total alkalinity (TAlk), CO2 fugacity (fCO2), pH, "
-        "chlorofluorocarbons (CFC-11, CFC-12, CFC-113, CCl4) and SF6, "
-        "spanning 1972–2021, in global oceans. Data source: https://www.ncei.noaa.gov/access/" 
-        "metadata/landing-page/bin/iso?id=gov.noaa.nodc:0283442"
+        "chlorofluorocarbons (CFC-11, CFC-12, CFC-113, CCl4), SF6, and carbon isotopes (C13, C14), "
+        "spanning 1972–2021, in global oceans. Data credits: Olsen et al., 2016 (doi: 10.5194/essd-8-297-2016) "
+        "and Key et al., 2015 (doi: 10.3334/CDIAC/OTG.NDP093_GLODAPv2). https://glodap.info."
     ),
     version="1.0.0"
 )
@@ -130,8 +130,8 @@ async def query_glodap(
     end: Optional[datetime] = Query(datetime.now(timezone.utc), description="End datetime (ISO format, default now)"),
     cruise: Optional[str] = Query(None, description="Comma-separated cruise expocode list (case-insensitive, space-tolerant)"),
     append: Optional[str] = Query(None, description="Comma-separated extra variables or wildcards (e.g. '*cfc*', 'nitrate', '*')"),
-    flag: Optional[bool] = Query(False, description="Include corresponding World Ocean Circulation Experiment (WOCE) flag of additional varaibles"),
-    qc: Optional[bool] = Query(False, description="Include corresponding quality control (QC) flag of additional varaibles"),
+    flag: Optional[bool] = Query(False, description="Include corresponding World Ocean Circulation Experiment (WOCE) flag of appended varaibles"),
+    qc: Optional[bool] = Query(False, description="Include corresponding quality control (QC) flag of appended varaibles"),
     doi: Optional[bool] = Query(True, description="Include DOI of data for citation"),
     limit: Optional[int] = Query(None, description="Maximum number of records to return"),
     offset: Optional[int] = Query(None, description="Number of records to skip"),
@@ -139,7 +139,8 @@ async def query_glodap(
 ):
     """
     Search oceanographic data from GLODAP v2.2023 using spatial, temporal, and cruise filters. 
-    GLODAP dataset includes bottle measurements of salinity, oxygen, nutrients(nitrate, silicate, phosphate), dissolved inorganic carbon (TCO2), total alkalinity (TAlk), CO2 fugacity (fCO2), pH, CFCs (CFC-11, CFC-12, CFC-113, CCl4) and SF6.
+    GLODAP dataset includes bottle measurements of temperature, salinity, oxygen, AOU, chla, nutrients (nitrate, silicate, phosphate), TCO2 (DIC), DOC, TOC, DON (Nitrogen), TON, total alkalinity (TAlk), CO2 fugacity (fCO2), pH, CFCs (cfc11, cfc12, cfc113, ccl4), SF6, neon and various isotopes (C13, C14, O18, H3, He3). 
+    Full list of available data variables: https://gee-community-catalog.org/projects/glodap/#variable-key
 
     #### Usage
     * /glodap/v2/2023?lon0=-60&lon1=-30&lat0=0&lat1=30&dep0=0&dep1=200&start=1980-01-01&end=2020-12-31&append=nitrate,silicate,phosphate,oxygen,cfc*
